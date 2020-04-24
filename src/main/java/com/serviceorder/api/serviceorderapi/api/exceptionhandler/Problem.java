@@ -2,14 +2,14 @@ package com.serviceorder.api.serviceorderapi.api.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Problem {
 
     private Integer status;
-    private LocalDateTime dataTime;
+    private OffsetDateTime dataTime;
     private String title;
     private List<Field> fields;
 
@@ -48,11 +48,11 @@ public class Problem {
         this.status = status;
     }
 
-    public LocalDateTime getDataTime() {
+    public OffsetDateTime getDataTime() {
         return dataTime;
     }
 
-    public void setDataTime(LocalDateTime dataTime) {
+    public void setDataTime(OffsetDateTime dataTime) {
         this.dataTime = dataTime;
     }
 
