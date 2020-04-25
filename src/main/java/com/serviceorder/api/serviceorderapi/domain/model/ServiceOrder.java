@@ -3,6 +3,8 @@ package com.serviceorder.api.serviceorderapi.domain.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +25,9 @@ public class ServiceOrder {
 
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
+
+    @OneToMany(mappedBy = "serviceOrder")
+    private List<Comment> comments = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -78,6 +83,14 @@ public class ServiceOrder {
 
     public void setEndDate(OffsetDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override

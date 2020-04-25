@@ -1,5 +1,6 @@
 package com.serviceorder.api.serviceorderapi.api.exceptionhandler;
 
+import com.serviceorder.api.serviceorderapi.domain.exception.EntityNotFoundException;
 import com.serviceorder.api.serviceorderapi.domain.exception.RuleException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,18 @@ import java.util.ArrayList;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Object> handleEntityNotFound(RuleException ex, WebRequest request){
+        var status = HttpStatus.NOT_FOUND;
+        var problem = new Problem();
+
+        problem.setStatus(status.value());
+        problem.setTitle(ex.getMessage());
+        problem.setDataTime(OffsetDateTime.now());
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
 
     @ExceptionHandler(RuleException.class)
     public ResponseEntity<Object> handleRuleException(RuleException ex, WebRequest request){
