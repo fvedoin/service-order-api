@@ -12,8 +12,8 @@ public class ServiceOrderModel {
     private String description;
     private BigDecimal price;
     private ServiceOrderStatus status;
-    private OffsetDateTime startDate;
-    private OffsetDateTime endDate;
+    private OffsetDateTime openingDate;
+    private OffsetDateTime closingDate;
 
     public Long getId() {
         return id;
@@ -55,19 +55,19 @@ public class ServiceOrderModel {
         this.status = status;
     }
 
-    public OffsetDateTime getStartDate() {
-        return startDate;
+    public OffsetDateTime getOpeningDate() {
+        return openingDate;
     }
 
-    public void setStartDate(OffsetDateTime startDate) {
-        this.startDate = startDate;
+    public void setOpeningDate(OffsetDateTime openingDate) {
+        this.openingDate = openingDate;
     }
 
-    public OffsetDateTime getEndDate() {
-        return endDate;
+    public OffsetDateTime getClosingDate() {
+        return closingDate;
     }
 
-    public void setEndDate(OffsetDateTime endDate) {
-        this.endDate = endDate;
+    public void setClosingDate(OffsetDateTime closingDate) {
+        this.closingDate = closingDate;
     }
 }

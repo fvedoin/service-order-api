@@ -53,6 +53,18 @@ public class ServiceOrderController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("/{serviceOrderId}/close")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void close(@PathVariable Long serviceOrderId){
+        crudServiceOrderService.close(serviceOrderId);
+    }
+
+    @PutMapping("/{serviceOrderId}/cancel")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancel(@PathVariable Long serviceOrderId){
+        crudServiceOrderService.cancel(serviceOrderId);
+    }
+
     private ServiceOrderModel toModel(ServiceOrder serviceOrder){
         return modelMapper.map(serviceOrder, ServiceOrderModel.class);
     }

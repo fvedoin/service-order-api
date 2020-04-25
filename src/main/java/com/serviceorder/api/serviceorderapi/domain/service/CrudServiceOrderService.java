@@ -12,7 +12,6 @@ import com.serviceorder.api.serviceorderapi.domain.repository.ServiceOrderReposi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Service
@@ -33,14 +32,29 @@ public class CrudServiceOrderService {
 
         serviceOrder.setClient(client);
         serviceOrder.setStatus(ServiceOrderStatus.OPEN);
-        serviceOrder.setStartDate(OffsetDateTime.now());
+        serviceOrder.setOpeningDate(OffsetDateTime.now());
 
         return serviceOrderRepository.save(serviceOrder);
     }
 
+    public void close(Long serviceOrderId){
+        ServiceOrder serviceOrder = find(serviceOrderId);
+
+        serviceOrder.close();
+
+        serviceOrderRepository.save(serviceOrder);
+    }
+
+    public void cancel(Long serviceOrderId){
+        ServiceOrder serviceOrder = find(serviceOrderId);
+
+        serviceOrder.cancel();
+
+        serviceOrderRepository.save(serviceOrder);
+    }
+
     public Comment addComment(Long serviceOrderId, String description){
-        ServiceOrder serviceOrder = serviceOrderRepository.findById(serviceOrderId)
-                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+        ServiceOrder serviceOrder = find(serviceOrderId);
 
         Comment comment = new Comment();
         comment.setSendDate(OffsetDateTime.now());
@@ -48,5 +62,10 @@ public class CrudServiceOrderService {
         comment.setServiceOrder(serviceOrder);
 
         return commentRepository.save(comment);
+    }
+
+    private ServiceOrder find(Long serviceOrderId) {
+        return serviceOrderRepository.findById(serviceOrderId)
+                .orElseThrow(() -> new EntityNotFoundException("Service order not found"));
     }
 }

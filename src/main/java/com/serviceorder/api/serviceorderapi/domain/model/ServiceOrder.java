@@ -1,5 +1,7 @@
 package com.serviceorder.api.serviceorderapi.domain.model;
 
+import com.serviceorder.api.serviceorderapi.domain.exception.RuleException;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -23,8 +25,8 @@ public class ServiceOrder {
     @Enumerated(EnumType.STRING)
     private ServiceOrderStatus status;
 
-    private OffsetDateTime startDate;
-    private OffsetDateTime endDate;
+    private OffsetDateTime openingDate;
+    private OffsetDateTime closingDate;
 
     @OneToMany(mappedBy = "serviceOrder")
     private List<Comment> comments = new ArrayList<>();
@@ -69,20 +71,20 @@ public class ServiceOrder {
         this.status = status;
     }
 
-    public OffsetDateTime getStartDate() {
-        return startDate;
+    public OffsetDateTime getOpeningDate() {
+        return openingDate;
     }
 
-    public void setStartDate(OffsetDateTime startDate) {
-        this.startDate = startDate;
+    public void setOpeningDate(OffsetDateTime startDate) {
+        this.openingDate = startDate;
     }
 
-    public OffsetDateTime getEndDate() {
-        return endDate;
+    public OffsetDateTime getClosingDate() {
+        return closingDate;
     }
 
-    public void setEndDate(OffsetDateTime endDate) {
-        this.endDate = endDate;
+    public void setClosingDate(OffsetDateTime endDate) {
+        this.closingDate = endDate;
     }
 
     public List<Comment> getComments() {
@@ -104,6 +106,38 @@ public class ServiceOrder {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public boolean canBeCanceled(){
+        return ServiceOrderStatus.OPEN.equals(getStatus());
+    }
+
+    public boolean cantBeCanceled(){
+        return !canBeCanceled();
+    }
+
+    public boolean canBeClosed(){
+        return ServiceOrderStatus.OPEN.equals(getStatus());
+    }
+
+    public boolean cantBeClosed(){
+        return !canBeClosed();
+    }
+
+    public void close(){
+        if (cantBeClosed()){
+            throw new RuleException("Service order can't be closed");
+        }
+        setStatus(ServiceOrderStatus.CLOSED);
+        setClosingDate(OffsetDateTime.now());
+    }
+
+    public void cancel(){
+        if (cantBeCanceled()){
+            throw new RuleException("Service order can't be canceled");
+        }
+        setStatus(ServiceOrderStatus.CANCELED);
+        setClosingDate(OffsetDateTime.now());
     }
 }
 
