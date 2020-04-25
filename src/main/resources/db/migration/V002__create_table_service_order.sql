@@ -10,4 +10,4 @@ create table service_order (
     primary key (id)
 );
 
-alter table service_order add constraint fk_service_order_client foreign key (client_id) references client(id)
+alter table service_order add constraint fk_client_service_order foreign key (client_id) references client(id)
